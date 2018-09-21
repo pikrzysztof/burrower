@@ -13,4 +13,3 @@ case class BurrowPartitionLag(
   start: BurrowLagValue,
   end: BurrowLagValue
 )
-

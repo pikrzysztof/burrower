@@ -10,10 +10,9 @@ case class BurrowConsumerStatus(
   cluster: String,
   group: String,
   status: String,
-  complete: Boolean,
+  complete: Int,
   partitions: List[BurrowPartitionLag],
   partition_count: Int,
   maxlag: Option[BurrowPartitionLag],
   totallag: Int
 )
-
