@@ -65,14 +65,19 @@ class OffsetMonitor (
   val burrowBaseUrl = f"http://$burrowHost:$burrowPort/v3/kafka"
 
   def run(): Unit = {
-    while (true) {
-      val lag = getLag
-      if (lag.isDefined) {
-        writer.write(LagGroup(System.currentTimeMillis(), lag.get))
-      } else {
-        logger.info("No lag values to write.")
+    try {
+      while (true) {
+        val lag = getLag
+        if (lag.isDefined) {
+          writer.write(LagGroup(System.currentTimeMillis(), lag.get))
+        } else {
+          logger.info("No lag values to write.")
+        }
+        Thread.sleep(1000 * 5)
       }
-      Thread.sleep(1000 * 5)
+      logger.info("Completed for no particular reason")
+    } catch {
+      case e: Exception => e.printStackTrace()
     }
   }
 
