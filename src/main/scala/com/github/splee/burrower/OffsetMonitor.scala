@@ -4,6 +4,7 @@ import com.github.splee.burrower.lag.{BurrowConsumerStatus, BurrowPartitionLag, 
 import com.github.splee.burrower.write.{ConsoleWriter, InfluxWriter, Writer}
 import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.scalalogging.LazyLogging
+import scala.util.matching.Regex
 import scalaj.http._
 import play.api.libs.json._
 
@@ -98,8 +99,10 @@ class OffsetMonitor (
       logger.error(f"Error retrieving consumers: '$errorMsg'")
       return None
     }
-
-    Option((respJson \ "consumers").as[List[String]])
+    val exclude_groups_re = """^(kmf-consumer-group|console-consumer)""".r
+    val consList = (respJson \ "consumers").as[List[String]]
+    val consListFiltered = consList.filter{ s => ! exclude_groups_re.findFirstIn(s).isDefined }
+    Option(consListFiltered)
   }
 
   def getLag(cluster: String, consumer: String): Option[List[Lag]] = {
