@@ -10,6 +10,6 @@ case class BurrowPartitionLag(
   topic: String,
   partition: Int,
   status: String,
-  start: BurrowLagValue,
-  end: BurrowLagValue
+  start: Option[BurrowLagValue],
+  end: Option[BurrowLagValue]
 )

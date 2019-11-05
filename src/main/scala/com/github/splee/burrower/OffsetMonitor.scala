@@ -64,7 +64,7 @@ class OffsetMonitor (
 ) extends Runnable with LazyLogging {
 
   val burrowBaseUrl = f"http://$burrowHost:$burrowPort/v3/kafka"
-
+  logger.info(f"burrowBaseURL = '$burrowBaseUrl'")
   def run(): Unit = {
     while (true) {
       val lag = getLag
@@ -113,16 +113,20 @@ class OffsetMonitor (
       logger.error(f"Error retrieving lag: '$errorMsg")
       return None
     }
-    val statusResponse = (respJson \ "status").as[BurrowConsumerStatus]
-    Option(statusResponse.partitions.map((item: BurrowPartitionLag) => {
+    val status = respJson \ "status"
+    logger.debug(f"respJSONStatus '$status'")
+    val statusResponse = status.as[BurrowConsumerStatus]
+    Option(statusResponse.partitions.filter((item: BurrowPartitionLag) => {
+      !item.end.isEmpty
+    }).map((item: BurrowPartitionLag) => {
       Lag(
         cluster,
         consumer,
         item.topic,
         item.partition,
-        item.end.offset,
-        item.end.timestamp,
-        item.end.lag
+        item.end.get.offset,
+        item.end.get.timestamp,
+        item.end.get.lag
       )
     }))
   }

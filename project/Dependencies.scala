@@ -6,7 +6,7 @@ object Dependencies {
   )
 
   object V {
-    val playJson = "2.5.2"
+    val playJson = "2.5.19"
   }
 
   object Libraries {

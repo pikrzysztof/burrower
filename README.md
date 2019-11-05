@@ -5,7 +5,7 @@ and report it to InfluxDB.
 
 **Works with:**
 * InfluxDB 0.9
-* Burrow latest (Commit SHA: [7930a61](https://github.com/linkedin/Burrow/commit/7930a61a3e72df5df8a59ccdf3158585b785762f))
+* Burrow latest (Commit SHA: [334be91](https://github.com/linkedin/Burrow/commit/334be9125dcb3d0b5cddbee3f69cb956419d5a9e))
 
 Burrower will traverse the Burrow API and retrieve lag metrics for all clusters and consumer groups that are available.
 
